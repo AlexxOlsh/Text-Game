@@ -21,6 +21,11 @@ if __name__ == "__main__":
             'max': 15
         }
     }
+
+    log_list = {
+        'more': [],
+        'less': []
+    }
     level = None
     print('Добро пожаловать в игру! \n')
     while level != 0:
@@ -36,7 +41,7 @@ if __name__ == "__main__":
 
     print(level)
     right_answer = randint(0, level_list[level]['max'])
-    print(f"Я загадал число от 0 до {level_list[level]['max']}. \n")
+    print(f"Я загадал число от 0 до {level_list[level]['max']}. Количество попыток: {level_list[level]['count']} \n")
     write_log("[" + str(datetime.now()) + "][INFO][User][System]: Загадано число: " + str(right_answer))
     answer = None
     answer_count = 0
@@ -45,9 +50,15 @@ if __name__ == "__main__":
         try:
             answer = int(input('Какое число я загадал? \n'))
             answer_count += 1
-            check_result = check_number(answer, right_answer)
+            check_result, status = check_number(answer, right_answer, answer_count)
+            if status != '':
+                log_list[status].append(answer)
             write_log(check_result)
+            if answer_count == level_list[level]['count']:
+                print('Вы проиграли. Количество попыток закончилось')
+                break
         except ValueError:
             print('Введите число! \n')
 
     write_log('Попыток: ' + str(answer_count))
+    print(log_list)
