@@ -1,7 +1,6 @@
-from datetime import datetime
 from random import randint
-import main_functions
-import os.path
+from main_functions import check_number, write_log, datetime
+
 
 if __name__ == "__main__":
     first_menu = 'Выберите уровень сложности: \n1 - Лёгкий \n2 - Средний \n3 - Тяжелый \nЕсли хотите выйти из игры, нажмите 0 \n'
@@ -29,18 +28,26 @@ if __name__ == "__main__":
             level = int(input(first_menu))
             if level > 0 and level < 4:
                 print(f"Вы выбрали {level_list[level]['name']} уровень сложности \n")
+                break
             else:
                 print('Выберите уровень от 1 до 3 \n')
         except ValueError:
             print('Введите число! \n')
 
-    right_answer =  randint(0, level_list[level]['max'])
-    print('Я загадал число от 0 до ' + level_list[level]['max'] + '. \n')
+    print(level)
+    right_answer = randint(0, level_list[level]['max'])
+    print(f"Я загадал число от 0 до {level_list[level]['max']}. \n")
+    write_log("[" + str(datetime.now()) + "][INFO][User][System]: Загадано число: " + str(right_answer))
     answer = None
     answer_count = 0
 
-    while answer!=right_answer:
+    while answer != right_answer:
         try:
             answer = int(input('Какое число я загадал? \n'))
+            answer_count += 1
+            check_result = check_number(answer, right_answer)
+            write_log(check_result)
         except ValueError:
             print('Введите число! \n')
+
+    write_log('Попыток: ' + str(answer_count))
