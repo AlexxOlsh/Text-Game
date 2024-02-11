@@ -1,5 +1,6 @@
 from random import randint
-from main_functions import check_number, write_log, datetime
+from datetime import datetime
+from main_functions import check_number, write_log
 
 
 if __name__ == "__main__":
@@ -50,9 +51,21 @@ if __name__ == "__main__":
         try:
             answer = int(input('Какое число я загадал? \n'))
             answer_count += 1
-            check_result, status = check_number(answer, right_answer, answer_count)
-            if status != '':
+            status = check_number(answer, right_answer)
+            current_dt = datetime.now()
+            check_result = ''
+            if status == 'more':
                 log_list[status].append(answer)
+                check_result = "[" + str(current_dt) + "][INFO][User]: Введено число " + str(answer)
+                print('Не угадали. Число должно быть меньше')
+            elif status == 'less':
+                log_list[status].append(answer)
+                check_result = "[" + str(current_dt) + "][INFO][User]: Введено число " + str(answer)
+                print('Не угадали. Число должно быть больше')
+            elif status == 'equal':
+                check_result = "[" + str(current_dt) + "][INFO][User][System]: Число угадано."
+                print(f'Поздравляю! Вы угадали! Количество попыток: {answer_count}')
+
             write_log(check_result)
             if answer_count == level_list[level]['count']:
                 print('Вы проиграли. Количество попыток закончилось')

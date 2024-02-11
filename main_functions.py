@@ -1,23 +1,13 @@
-from datetime import datetime
 import os.path
 
 
-def check_number(answer, right_answer, answer_count):
-    current_dt = datetime.now()
+def check_number(answer, right_answer):
     if answer > right_answer:
-        status = 'more'
-        result = "[" + str(current_dt) + "][INFO][User]: Введено число " + str(answer)
-        print('Не угадали. Число должно быть меньше')
-        return result, status
+        return 'more'
     elif answer < right_answer:
-        status = 'less'
-        result = "[" + str(current_dt) + "][INFO][User]: Введено число " + str(answer)
-        print('Не угадали. Число должно быть больше')
-        return result, status
+        return 'less'
     elif answer == right_answer:
-        result = "[" + str(current_dt) + "][INFO][User][System]: Число угадано."
-        print(f'Поздравляю! Вы угадали! Количество попыток: {answer_count}')
-        return result, ''
+        return 'equal'
 
 
 def write_log(text):
